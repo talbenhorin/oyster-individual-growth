@@ -18,41 +18,35 @@ library(MCMCvis)
 library(ggplot2)
 library(patchwork)
 library(scales)
-library(ggdistribute)
+#library(ggdistribute)
 
 dat <- read.csv("dlvb.csv", fill = FALSE, header = TRUE)
-m1 <-list(dl=dat$dl,line=dat$line,dt=dat$days,ind=dat$ind,L=dat$length) #data string
+m1 <-list(dl=dat$dl,line=dat$lineNum,L=dat$d2) #data string
 
 # individual and group von Bertalanffy growth model 
 cat(
   "model{
-    for (i in 1:XX) {
-    #
+    # von Bertalanffy growth model (Linf from Kraeuter et al 2007 JSR)
+    for (i in 1:981) {
+    
     dl[i] ~ dnorm(mu[i],tau)
-    mu[i] <- (Linf - L[i])*(1-exp(-K[ind[i]]*dt))
+    mu[i] <- (130 - L[i])*(1-exp(-K[i]*30))
+    K[i] ~ dnorm(K_line[line[i]],tau_line[line[i]])
     }
-    for (l in 1:XX) {
-      K[l] ~ dnorm(mu_line[l],tau_line[l])
+    for (l in 1:6) {
+      K_line[l] ~ dnorm(0,0.1)
+      tau_line[l] ~ dgamma(0.1,0.1)
     }
-    mu_line ~ dnorm(0,0.1)
     tau ~ dgamma(0.1,0.1)
-    tau_line ~ dgamma(0.1,0.1)
-  ",
+  }",
   file="m1.jag"
 )
 
-cat(
-  "model{
-    for (i in 1:5320) {
-      # Observation model across serial dilutions
-      c[i] ~ dbin(p[i],3)
-      p[i] <- 1-exp(-MPN[i]*v[i])
-      
-      # Biological model for microbial abundance
-      MPN[i] ~ dpois(lambda[i])
-      log(lambda[i]) <- b0 + b1*gear[i] + b2*tide[i] + b3*gear[i]*tide[i] + b4*mod[i] + b5*hi[i] + U[samp[i]] +V[time[i]]
-    }
+m1.inits <- list(list("K"=numeric(981),"K_line"=numeric(6),"tau"=0.2,"tau_line"=c(0.1,0.1,0.1,0.1,0.1,0.1)),
+                 list("K"=numeric(981),"K_line"=numeric(6),"tau"=0.01,"tau_line"=c(0.1,0.1,0.1,0.1,0.1,0.1)),
+                 list("K"=numeric(981),"K_line"=numeric(6),"tau"=0.1,"tau_line"=c(0.1,0.1,0.1,0.1,0.1,0.1)))
 
+parameters <- c("K_line","tau_line","tau")
 
 mfit <- jags(data = m1,
                inits = m1.inits,
