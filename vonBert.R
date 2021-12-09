@@ -51,7 +51,7 @@ m1.inits <- list(list("K"=numeric(990),"K_line"=numeric(6),"tau"=0.2,"tau_line"=
                  list("K"=numeric(990),"K_line"=numeric(6),"tau"=0.01,"tau_line"=c(0.1,0.1,0.1,0.1,0.1,0.1)),
                  list("K"=numeric(990),"K_line"=numeric(6),"tau"=0.1,"tau_line"=c(0.1,0.1,0.1,0.1,0.1,0.1)))
 
-parameters <- c("sigma_line")
+parameters <- c("sigma_line","K_line")
 
 mfit <- jags(data = m1,
                inits = m1.inits,
@@ -63,7 +63,7 @@ mfit <- jags(data = m1,
                n.thin = 3) 
 
 # Sort output for plot
-out <- data.frame(o1=mfit$BUGSoutput$sims.list$sigma_line)
+out <- data.frame(o1=mfit$BUGSoutput$sims.list$K_line)
 mod1 <- stack(out,select=c('o1.1'))
 names(mod1) <- c("K","line")
 mod2 <- stack(out,select=c('o1.2'))
@@ -81,7 +81,7 @@ p1 <- ggplot(mod1,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
-  xlim(0.025,0.045)+
+  xlim(-0.01,0.015)+
   labs(title=expression("Narrow River"),x = "", y = "")+
   geom_vline(xintercept = 0.035, linetype="dotted", 
              color = "black", size=1)
@@ -89,7 +89,7 @@ p2 <- ggplot(mod2,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
-  xlim(0.025,0.045)+
+  xlim(-0.01,0.015)+
   labs(title=expression("Fisher's Island"),x = "", y = "")+
   geom_vline(xintercept = 0.035, linetype="dotted", 
              color = "black", size=1)
@@ -97,7 +97,7 @@ p3 <- ggplot(mod3,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
-  xlim(0.025,0.045)+
+  xlim(-0.01,0.015)+
   labs(title=expression("Green Hill"),x = "", y = "")+
   geom_vline(xintercept = 0.035, linetype="dotted", 
              color = "black", size=1)
@@ -105,7 +105,7 @@ p4 <- ggplot(mod4,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
-  xlim(0.025,0.045)+
+  xlim(-0.01,0.015)+
   labs(title=expression("NEH"),x = "", y = "")+
   geom_vline(xintercept = 0.035, linetype="dotted", 
              color = "black", size=1)
@@ -113,7 +113,7 @@ p5 <- ggplot(mod4,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
-  xlim(0.025,0.045)+
+  xlim(-0.01,0.015)+
   labs(title=expression("Martha's Vinyard"),x = "", y = "")+
   geom_vline(xintercept = 0.035, linetype="dotted", 
              color = "black", size=1)
@@ -121,7 +121,7 @@ p6 <- ggplot(mod4,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
-  xlim(0.025,0.045)+
+  xlim(-0.01,0.015)+
   labs(title=expression("Connecticut"),x = "Variance in estimated Brody growth coefficient", y = "")+
   geom_vline(xintercept = 0.035, linetype="dotted", 
              color = "black", size=1)
