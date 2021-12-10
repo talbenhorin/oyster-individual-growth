@@ -63,7 +63,7 @@ mfit <- jags(data = m1,
                n.thin = 3) 
 
 # Sort output for plot
-out <- data.frame(o1=mfit$BUGSoutput$sims.list$sigma_line)
+out <- data.frame(o1=mfit$BUGSoutput$sims.list$K_line)
 mod1 <- stack(out,select=c('o1.1'))
 names(mod1) <- c("K","line")
 mod2 <- stack(out,select=c('o1.2'))
