@@ -63,7 +63,7 @@ mfit <- jags(data = m1,
                n.thin = 3) 
 
 # Sort output for plot
-out <- data.frame(o1=mfit$BUGSoutput$sims.list$K_line)
+out <- data.frame(o1=mfit$BUGSoutput$sims.list$sigma_line)
 mod1 <- stack(out,select=c('o1.1'))
 names(mod1) <- c("K","line")
 mod2 <- stack(out,select=c('o1.2'))
@@ -82,48 +82,99 @@ p1 <- ggplot(mod1,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
+  xlim(-0.005,0.015)+
+  labs(title=expression("Narrow River"),x = expression(paste("Brody growth coefficient ",(day^-1))), y = "")+
+  geom_vline(xintercept = 0.002797396, linetype="dotted", 
+             color = "black", size=1)
+p2 <- ggplot(mod2,aes(x=K))+
+  geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
+  theme_classic()+
+  theme(legend.position="none")+
+  xlim(-0.005,0.015)+
+  labs(title=expression("Fishers Island"),x = expression(paste("Brody growth coefficient ",(day^-1))), y = "")+
+  geom_vline(xintercept = 0.003731984, linetype="dotted", 
+             color = "black", size=1)
+p3 <- ggplot(mod3,aes(x=K))+
+  geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
+  theme_classic()+
+  theme(legend.position="none")+
+  xlim(-0.005,0.015)+
+  labs(title=expression("Green Hill"),x = expression(paste("Brody growth coefficient ",(day^-1))), y = "")+
+  geom_vline(xintercept = 0.0038908483, linetype="dotted", 
+             color = "black", size=1)
+p4 <- ggplot(mod4,aes(x=K))+
+  geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
+  theme_classic()+
+  theme(legend.position="none")+
+  xlim(-0.005,0.015)+
+  labs(title=expression("NEH"),x = expression(paste("Brody growth coefficient ",(day^-1))), y = "")+
+  geom_vline(xintercept = 0.00578518, linetype="dotted", 
+             color = "black", size=1)
+p5 <- ggplot(mod5,aes(x=K))+
+  geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
+  theme_classic()+
+  theme(legend.position="none")+
+  xlim(-0.005,0.015)+
+  labs(title=expression("Marthas Vinyard"),x = expression(paste("Brody growth coefficient ",(day^-1))), y = "")+
+  geom_vline(xintercept = 0.003476082, linetype="dotted", 
+             color = "black", size=1)
+p6 <- ggplot(mod6,aes(x=K))+
+  geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
+  theme_classic()+
+  theme(legend.position="none")+
+  xlim(-0.005,0.015)+
+  labs(title=expression("Connecticut"),x = expression(paste("Brody growth coefficient ",(day^-1))), y = "")+
+  geom_vline(xintercept = 0.003021894, linetype="dotted",
+             color = "black", size=1)
+p1/p2/p3/p4/p5/p6
+
+# Sigma2 plot
+p1 <- ggplot(mod1,aes(x=K))+
+  geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
+  theme_classic()+
+  theme(legend.position="none")+
   xlim(0.025,0.045)+
-  labs(title=expression("Narrow River"),x = "", y = "")+
-  geom_vline(xintercept = 0.03519011, linetype="dotted", 
+  labs(title=expression("Narrow River"),x = expression("Variance in Brody growth coefficient"), y = "")+
+  geom_vline(xintercept = 0.03525398, linetype="dotted", 
              color = "black", size=1)
 p2 <- ggplot(mod2,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
   xlim(0.025,0.045)+
-  labs(title=expression("Fisher's Island"),x = "", y = "")+
-  geom_vline(xintercept = 0.03535833, linetype="dotted", 
+  labs(title=expression("Fishers Island"),x = expression("Variance in Brody growth coefficient"), y = "")+
+  geom_vline(xintercept = 0.03534656, linetype="dotted", 
              color = "black", size=1)
 p3 <- ggplot(mod3,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
   xlim(0.025,0.045)+
-  labs(title=expression("Green Hill"),x = "", y = "")+
-  geom_vline(xintercept = 0.03515213, linetype="dotted", 
+  labs(title=expression("Green Hill"),x = expression("Variance in Brody growth coefficient"), y = "")+
+  geom_vline(xintercept = 0.03513668, linetype="dotted", 
              color = "black", size=1)
 p4 <- ggplot(mod4,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
   xlim(0.025,0.045)+
-  labs(title=expression("NEH"),x = "", y = "")+
-  geom_vline(xintercept = 0.03547868, linetype="dotted", 
+  labs(title=expression("NEH"),x = expression("Variance in Brody growth coefficient"), y = "")+
+  geom_vline(xintercept = 0.03544945, linetype="dotted", 
              color = "black", size=1)
 p5 <- ggplot(mod5,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
   xlim(0.025,0.045)+
-  labs(title=expression("Martha's Vinyard"),x = "", y = "")+
-  geom_vline(xintercept = 0.03537808, linetype="dotted", 
+  labs(title=expression("Marthas Vinyard"),x = expression("Variance in Brody growth coefficient"), y = "")+
+  geom_vline(xintercept = 0.03535114, linetype="dotted", 
              color = "black", size=1)
 p6 <- ggplot(mod6,aes(x=K))+
   geom_density(color="darkblue",fill="lightblue",alpha=0.4)+
   theme_classic()+
   theme(legend.position="none")+
   xlim(0.025,0.045)+
-  labs(title=expression("Connecticut"),x = "Variance in estimated Brody growth coefficients", y = "")+
-  geom_vline(xintercept = 0.03589763, linetype="dotted", 
+  labs(title=expression("Connecticut"),x = expression("Variance in Brody growth coefficient"), y = "")+
+  geom_vline(xintercept = 0.03583538, linetype="dotted",
              color = "black", size=1)
 p1/p2/p3/p4/p5/p6
